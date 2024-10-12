@@ -19,26 +19,33 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> getTasks(@PathVariable Long projectId) {
-        List<Task> tasks = taskService.getTasksByProjectId(projectId);
-        return ResponseEntity.ok(tasks);
+    public ResponseEntity<List<Task>> getTasks(@PathVariable Long projectId, @RequestHeader("accountId") String accountId) {
+        try {
+            Long parsedAccountId = Long.parseLong(accountId);
+            List<Task> tasks = taskService.getTasksByProjectId(projectId, parsedAccountId);
+            return ResponseEntity.ok(tasks);
+        } catch (NumberFormatException e) {
+            // 만약 long으로 변환되지 않는 경우..
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
+
     @PostMapping
-    public ResponseEntity<Task> createTask(@PathVariable Long projectId, @RequestBody Task task) {
-        Task createdTask = taskService.createTask(projectId, task);
+    public ResponseEntity<Task> createTask(@PathVariable Long projectId, @RequestHeader("accountId") String accountId, @RequestBody Task task) {
+        Task createdTask = taskService.createTask(projectId, Long.parseLong(accountId), task);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long projectId, @PathVariable Long taskId, @RequestBody Task task) {
-        Task updatedTask = taskService.updateTask(projectId, taskId, task);
+    public ResponseEntity<Task> updateTask(@PathVariable Long projectId, @PathVariable Long taskId, @RequestHeader("accountId") String accountId, @RequestBody Task task) {
+        Task updatedTask = taskService.updateTask(projectId, taskId, Long.parseLong(accountId), task);
         return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/{taskId}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long projectId, @PathVariable Long taskId) {
-        taskService.deleteTask(projectId, taskId);
+    public ResponseEntity<Void> deleteTask(@PathVariable Long projectId, @PathVariable Long taskId, @RequestHeader("accountId") String accountId) {
+        taskService.deleteTask(projectId, taskId, Long.parseLong(accountId));
         return ResponseEntity.noContent().build();
     }
 }
