@@ -3,12 +3,12 @@ package com.nhnacademy.taskapi.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum State {
+public enum ProjectStatus {
     ACTIVE, INACTIVE, COMPLETE;
 
     @JsonCreator
-    public static State fromString(String str){
-        for (State value : State.values()) {
+    public static ProjectStatus fromString(String str){
+        for (ProjectStatus value : ProjectStatus.values()) {
             if (value.name().equalsIgnoreCase(str)) {
                 return value;
             }

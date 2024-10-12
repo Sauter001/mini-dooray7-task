@@ -1,13 +1,10 @@
 package com.nhnacademy.taskapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -19,14 +16,14 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectId;
+    private Long id;
 
-    private Long accountId;
+    @Setter
+    private String name;
 
-    private String projectName;
-
-    @JsonProperty("project_state")
-    private State projectState;
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus projectStatus;
 
 }
 

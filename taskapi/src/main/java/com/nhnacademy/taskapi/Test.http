@@ -2,4 +2,49 @@
 GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
+### 프로젝트 Post request
+POST http://localhost:8080/projects
+Content-Type: application/json
+X-USER-ID: 100
+
+{
+  "projectName": "프로젝트 이름",
+  "project_status": "ACTIVE"
+}
+
 ###
+GET http://localhost:8080/projects
+Content-Type: application/json
+X-USER-ID: 100
+
+###
+PUT http://localhost:8080/projects/1
+Content-Type: application/json
+X-USER-ID: 100
+
+{
+  "projectId": 1,
+  "projectName": "업데이트한 프로젝트 이름",
+  "project_status": "ACTIVE"
+}
+
+###
+GET http://localhost:8080/projects
+Content-Type: application/json
+X-USER-ID: 10
+
+###
+POST http://localhost:8080/projects/1/members/10
+X-USER-ID: 100
+Content-Type: application/json
+
+###
+POST http://localhost:8080/projects/2/members/10
+Content-Type: application/json
+
+###
+DELETE http://localhost:8080/projects/1
+Content-Type: application/json
+X-USER-ID: 100
+
+

@@ -15,14 +15,18 @@ public class ProjectMember {
     private Long projectMemberId;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)  // 외래키 명시
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)  // 외래키 명시
+    @JoinColumn(name = "account_id")
     private Account account;
 
-    @JsonProperty("project_auth")
+    @Enumerated(EnumType.STRING)
     private ProjectAuth projectAuth;
+
+    public ProjectMember orElseThrow(Object o) {
+        return null;
+    }
 }
 
