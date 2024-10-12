@@ -1,25 +1,32 @@
 package com.nhnacademy.taskapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
-@Table(name = "Project")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "project")
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    private Long accountId;
 
-    @Column(nullable = false, length = 30)
     private String projectName;
 
-    @Column(nullable = false, length = 20)
-    private String projectState;
+    @JsonProperty("project_state")
+    private State projectState;
 
-    // Getters and Setters
 }
 
