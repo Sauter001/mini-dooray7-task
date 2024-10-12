@@ -3,6 +3,7 @@ package com.nhnacademy.taskapi.controller;
 import com.nhnacademy.taskapi.dto.request.ProjectDto;
 import com.nhnacademy.taskapi.dto.response.DefaultDto;
 import com.nhnacademy.taskapi.entity.Project;
+import com.nhnacademy.taskapi.entity.ProjectMember;
 import com.nhnacademy.taskapi.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
