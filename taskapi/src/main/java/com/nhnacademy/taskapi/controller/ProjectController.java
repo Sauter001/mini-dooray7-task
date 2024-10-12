@@ -1,5 +1,7 @@
 package com.nhnacademy.taskapi.controller;
 
+import com.nhnacademy.taskapi.dto.request.ProjectDto;
+import com.nhnacademy.taskapi.dto.response.DefaultDto;
 import com.nhnacademy.taskapi.entity.Project;
 import com.nhnacademy.taskapi.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,32 +18,51 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
-
+    //프로젝트 가져오기
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
-        // 모든 프로젝트 조회
-        return ResponseEntity.ok(projectService.getAllProjects());
+    public ResponseEntity<List<Project>> getAllProjects(@RequestHeader("X-USER-ID") Long accountId) {
+        List<Project> projects = projectService.getProjectsByAccountId(accountId);
+        return ResponseEntity.ok(projects);
     }
-
+    //프로젝트 등록
     @PostMapping
-    public ResponseEntity<Project> createProject(@RequestBody Project project) {
-        // 프로젝트 생성
-        Project createdProject = projectService.createProject(project);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProject);
+    public ResponseEntity<DefaultDto> registerProject(@RequestHeader("X-USER-ID") Long accountId,
+                                                      @RequestBody ProjectDto projectDto) {
+        projectService.saveProject(accountId, projectDto);
+        DefaultDto dto = new DefaultDto(201, null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    //프로젝트 수정
     @PutMapping("/{projectId}")
-    public ResponseEntity<Project> updateProject(
-            @PathVariable Long projectId, @RequestBody Project project) {
-
-        Project updatedProject = projectService.updateProject(projectId, project);
-        return ResponseEntity.ok(updatedProject);
+    public ResponseEntity<DefaultDto> updateProject(
+            @PathVariable Long projectId, // 수정할 프로젝트 ID
+            @RequestBody ProjectDto projectDto, // 수정할 프로젝트 내용
+            @RequestHeader("X-USER-ID") Long accountId
+    ) {
+        Project updatedProject = projectService.updateProject(accountId, projectDto);
+        DefaultDto dto = new DefaultDto(200, updatedProject);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
+    //프로젝트 삭제
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {
-        projectService.deleteProject(projectId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<DefaultDto> deleteProject(@RequestHeader("X-USER-ID") Long accountId,
+                                                    @PathVariable Long projectId) {
+        projectService.deleteProject(accountId, projectId);
+        DefaultDto dto = new DefaultDto(200, null);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
+    @PostMapping("/{projectId}/members/{registerAccountId}")
+    public ResponseEntity<DefaultDto> addMemberToProject(
+            @PathVariable Long projectId,  // 프로젝트 ID
+            @PathVariable Long registerAccountId,   // 계정 ID
+            @RequestHeader("X-USER-ID") Long requestingAccountId
+    ) {
+        projectService.addMemberToProject(requestingAccountId, registerAccountId, projectId);
+        DefaultDto dto = new DefaultDto(201, null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
 }
