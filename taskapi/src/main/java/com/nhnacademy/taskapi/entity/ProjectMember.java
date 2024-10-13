@@ -9,7 +9,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "project_member")
@@ -18,19 +17,18 @@ public class ProjectMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectMemberId;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private ProjectAuth projectAuth;
-
-    public ProjectMember orElseThrow(Object o) {
-        return null;
-    }
 }
 

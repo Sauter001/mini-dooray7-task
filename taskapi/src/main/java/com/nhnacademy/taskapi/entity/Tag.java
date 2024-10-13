@@ -17,11 +17,13 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;
 
+    @Setter
     @ManyToOne
     @JoinColumn
     private Project project;
 
     @Max(30)
+    @Setter
     private String tagName;
 
 }
