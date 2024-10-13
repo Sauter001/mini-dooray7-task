@@ -36,7 +36,7 @@ AccountId: 10
 ###
 PUT http://localhost:8080/projects/1
 Content-Type: application/json
-X-USER-ID: 100
+X-USER-ID: 10
 
 {
   "projectId": 1,
