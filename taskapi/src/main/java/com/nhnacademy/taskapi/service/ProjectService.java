@@ -46,9 +46,8 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
 
-        // 2. 요청한 사용자가 프로젝트 멤버인지 확인
-        if(!projectMemberRepository.existsByProjectAndMember(project, account)){
-            throw new AccountNotMemberException(accountId);
+        if (project.getManager().getAccountId().equals(account.getAccountId())){
+            throw new IllegalArgumentException("Only manager can delete project.");
         }
 
         // 3. 프로젝트 필드 업데이트
