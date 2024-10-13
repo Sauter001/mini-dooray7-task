@@ -22,4 +22,9 @@ public class TaskTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     private Task task;
+
+    public TaskTag(Task task, Tag tag) {
+        this.tag = tag;
+        this.task = task;
+    }
 }

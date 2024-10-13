@@ -3,7 +3,7 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ### 프로젝트 Post request
-POST http://localhost:8080/projects
+POST http://localhost:8082/projects
 Content-Type: application/json
 AccountId: 100
 

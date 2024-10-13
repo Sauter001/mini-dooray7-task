@@ -2,8 +2,8 @@ package com.nhnacademy.taskapi.service;
 
 import com.nhnacademy.taskapi.dto.request.ProjectDto;
 import com.nhnacademy.taskapi.dto.request.ProjectMakeDto;
+import com.nhnacademy.taskapi.dto.request.ProjectUpdateDto;
 import com.nhnacademy.taskapi.entity.*;
-import com.nhnacademy.taskapi.exception.AccountNotFoundException;
 import com.nhnacademy.taskapi.exception.AccountNotMemberException;
 import com.nhnacademy.taskapi.exception.ResourceNotFoundException;
 import com.nhnacademy.taskapi.repository.AccountRepository;
@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,16 +39,16 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public ProjectDto updateProject(Long accountId, ProjectDto projectDto) {
-        Project project = projectRepository.findById(projectDto.projectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectDto.projectId()));
+    public ProjectDto updateProject(Long accountId, Long projectId, ProjectUpdateDto projectDto) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
 
-        // 2. 요청한 사용자가 프로젝트 멤버인지 확인
-        ProjectMember projectMember =
-                projectMemberRepository.findByProjectAndMember(project, account).orElseThrow(() -> new AccountNotMemberException(accountId));
+        if (!project.getManager().getAccountId().equals(account.getAccountId())){
+            throw new IllegalArgumentException("Only manager can delete project.");
+        }
 
         // 3. 프로젝트 필드 업데이트
         project.setProjectName(projectDto.projectName());
@@ -65,8 +64,8 @@ public class ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
-        if (project.getManager().equals(account)){
-            throw new IllegalArgumentException("Olny manager can delete project.");
+        if (!project.getManager().getAccountId().equals(account.getAccountId())){
+            throw new IllegalArgumentException("Only manager can delete project.");
         }
 
         projectMemberRepository.deleteByProject(project);
@@ -81,7 +80,7 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID: " + accountId));
 
-        if(!(project.getManager().getAccountId().equals(accountId) || projectMemberRepository.existsByProjectAndMember(project, account))){
+        if(!project.getManager().getAccountId().equals(accountId) || !projectMemberRepository.existsByProjectAndMember(project, account)){
             throw new AccountNotMemberException(accountId);
         }
 
@@ -130,6 +129,18 @@ public class ProjectService {
         }
 
         return projectList;
+    }
+
+    public ProjectDto getProject(Long accountId, Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID:" + projectId));
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID: " + accountId));
+        if (projectMemberRepository.existsByProjectAndMember(project, account)) {
+            throw new IllegalArgumentException("This account is not a member of the project.");
+        }
+
+        return new ProjectDto(project.getProjectId(), project.getManager().getAccountId(), project.getProjectName(), project.getProjectStatus());
     }
 }
 
