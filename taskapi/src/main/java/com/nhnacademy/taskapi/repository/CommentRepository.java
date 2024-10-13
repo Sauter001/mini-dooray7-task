@@ -11,8 +11,7 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     // taskId를 통해 CommentView 리스트를 조회하는 쿼리
-
-    List<CommentView> findAllByTaskId(Long taskId);
+    List<CommentView> findAllByTaskTaskId(Long taskId);
 
     // commentId로 CommentView를 조회하는 쿼리
     CommentView findByCommentId(Long commentId);

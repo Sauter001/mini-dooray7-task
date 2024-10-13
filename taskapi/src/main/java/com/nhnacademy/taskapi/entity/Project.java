@@ -29,5 +29,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<Milestone> milestones;
+    public Long getProjectId() {
+        return id;
+    }
 }
-
