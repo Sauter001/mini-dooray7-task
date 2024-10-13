@@ -1,1 +1,0 @@
-insert into project(project_id, account_id, project_name, project_state)

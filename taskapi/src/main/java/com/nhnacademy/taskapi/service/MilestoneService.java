@@ -53,7 +53,9 @@ public class MilestoneService {
         // 마일스톤 업데이트 수행
         milestoneRepository.save(milestone);
         // view로 마일스톤 정보만 가져오기
-        return milestoneRepository.findByMileStoneId(milestoneId);
+        return milestoneRepository.findByMileStoneId(milestoneId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Milestone with id " + milestoneId + " not found"));
     }
 
     public void delete(Long projectId, Long milestoneId) {
