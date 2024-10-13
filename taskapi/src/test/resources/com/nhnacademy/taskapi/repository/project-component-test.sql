@@ -7,5 +7,5 @@ values (1, 'UI 설계'),
        (1, '테스트'),
 
 insert into tag (project_id, tag_name)
-values (1, 'DB'), (2, 'UI');
+values (1, 'DB'), (1, 'UI');
        
