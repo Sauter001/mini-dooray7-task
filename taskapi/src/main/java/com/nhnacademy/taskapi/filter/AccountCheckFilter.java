@@ -26,7 +26,7 @@ public class AccountCheckFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String userIdHeader = httpRequest.getHeader("X-USER-ID");
+        String userIdHeader = httpRequest.getHeader("accountId");
 
         if (userIdHeader != null) {
             Long accountId = Long.valueOf(userIdHeader);

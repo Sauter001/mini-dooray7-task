@@ -1,14 +1,13 @@
 package com.nhnacademy.taskapi.controller;
 
-import com.nhnacademy.taskapi.dto.request.ProjectDto;
 import com.nhnacademy.taskapi.dto.request.TagDto;
 import com.nhnacademy.taskapi.dto.response.DefaultDto;
-import com.nhnacademy.taskapi.service.ProjectService;
 import com.nhnacademy.taskapi.service.TagService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/projects/{projectId}/tags")
@@ -32,5 +31,32 @@ public class TagController {
     }
 
     //태그 조회
+    @GetMapping
+    public ResponseEntity<DefaultDto> getAllTags(@PathVariable("projectId") Long projectId) {
+        List<TagDto> tags = tagService.getTagsByProjectId(projectId);
+        DefaultDto defaultDto = new DefaultDto(200, tags);
+        return ResponseEntity.status(HttpStatus.CREATED).body(defaultDto);
+    }
+
+    //태그 수정
+    @PutMapping
+    public ResponseEntity<DefaultDto> updateTag(@PathVariable Long projectId,
+                                                @RequestBody TagDto tagDto
+    ) {
+        TagDto updateTagDto = tagService.updateTag(projectId, tagDto);
+        DefaultDto dto = new DefaultDto(200, updateTagDto);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
+    //태그 삭제
+    @DeleteMapping
+    public ResponseEntity<DefaultDto> deleteProject(@PathVariable Long projectId,
+                                                    @RequestBody TagDto tagDto
+    ) {
+        tagService.deleteTag(projectId, tagDto);
+        DefaultDto dto = new DefaultDto(200, null);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
 }
 

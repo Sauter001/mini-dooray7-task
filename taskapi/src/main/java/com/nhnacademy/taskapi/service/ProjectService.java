@@ -111,8 +111,5 @@ public class ProjectService {
     public List<Project> getProjectsByAccountId(Long accountId) {
         return projectMemberRepository.findProjectsByAccountId(accountId);
     }
-
-
-
 }
 

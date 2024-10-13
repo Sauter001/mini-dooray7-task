@@ -18,12 +18,11 @@ public class Tag {
     private Long tagId;
 
     @Setter
+    private String tagName;
+
+    @Setter
     @ManyToOne
     @JoinColumn
     private Project project;
-
-    @Max(30)
-    @Setter
-    private String tagName;
 
 }
