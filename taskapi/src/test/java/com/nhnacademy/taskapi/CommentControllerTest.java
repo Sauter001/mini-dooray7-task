@@ -5,7 +5,6 @@ import com.nhnacademy.taskapi.dto.request.CommentPostDto;
 import com.nhnacademy.taskapi.dto.request.CommentPutDto;
 import com.nhnacademy.taskapi.entity.view.CommentView;
 import com.nhnacademy.taskapi.entity.view.CommentView.TaskView;
-import com.nhnacademy.taskapi.filter.AccountCheckFilter;
 import com.nhnacademy.taskapi.service.CommentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +31,9 @@ class CommentControllerTest {
     @MockBean
     private CommentService commentService;
 
-    // 만약 AccountCheckFilter를 사용할 경우 이 부분을 추가하여 Mock 처리
-    @MockBean
-    private AccountCheckFilter accountCheckFilter;
+//    // 만약 AccountCheckFilter를 사용할 경우 이 부분을 추가하여 Mock 처리
+//    @MockBean
+//    private AccountCheckFilter accountCheckFilter;
 
     private CommentView commentView;
     private TaskView taskView;
