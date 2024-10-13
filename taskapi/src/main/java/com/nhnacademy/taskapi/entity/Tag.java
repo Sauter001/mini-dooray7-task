@@ -2,27 +2,21 @@ package com.nhnacademy.taskapi.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "tag")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;
 
-    @Setter
-    private String tagName;
-
-    @Setter
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
     private Project project;
 
+    @Setter
+    private String tagName;
 }

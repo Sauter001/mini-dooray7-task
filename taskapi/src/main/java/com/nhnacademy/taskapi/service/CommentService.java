@@ -20,7 +20,7 @@ public class CommentService {
     private final TaskRepository taskRepository;
 
     public List<CommentView> getComments(Long taskId) {
-        return commentRepository.findAllByTaskId(taskId);
+        return commentRepository.findAllByTaskTaskId(taskId);
     }
 
     public void postComment(CommentPostDto postDto) {
