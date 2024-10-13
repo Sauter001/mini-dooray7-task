@@ -10,7 +10,6 @@ import com.nhnacademy.taskapi.exception.TaskBelongsToAnotherProjectException;
 import com.nhnacademy.taskapi.exception.TaskNotFoundException;
 import com.nhnacademy.taskapi.repository.ProjectRepository;
 import com.nhnacademy.taskapi.repository.TaskRepository;
-import jakarta.validation.constraints.Null;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,18 +26,17 @@ public class TaskService {
         this.projectRepository = projectRepository;
     }
 
-    // 프로젝트 ID로 프로젝트에 속한 모든 Task 조회 (TaskResponseDto 반환)
+    // 프로젝트 ID로 프로젝트에 속한 모든 Task 조회
     public List<TaskResponseDto> getTasksByProjectId(Long projectId, Long accountId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
-        // Task를 TaskResponseDto로 변환하여 반환
         return taskRepository.findByProject(project).stream()
                 .map(this::toTaskResponseDto)
                 .collect(Collectors.toList());
     }
 
-    // Task 생성 (TaskPostDto로 입력 받고 TaskResponseDto로 반환)
+    // Task 생성
     public TaskResponseDto createTask(Long projectId, Long accountId, TaskPostDto taskPostDto) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
