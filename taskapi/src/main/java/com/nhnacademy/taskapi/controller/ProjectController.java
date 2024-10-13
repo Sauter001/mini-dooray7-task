@@ -2,6 +2,7 @@ package com.nhnacademy.taskapi.controller;
 
 import com.nhnacademy.taskapi.dto.request.ProjectDto;
 import com.nhnacademy.taskapi.dto.request.ProjectMakeDto;
+import com.nhnacademy.taskapi.dto.request.ProjectUpdateDto;
 import com.nhnacademy.taskapi.dto.response.DefaultDto;
 import com.nhnacademy.taskapi.entity.Project;
 import com.nhnacademy.taskapi.entity.ProjectMember;
@@ -40,10 +41,10 @@ public class ProjectController {
     @PutMapping("/{projectId}")
     public ResponseEntity<DefaultDto> updateProject(
             @PathVariable Long projectId, // 수정할 프로젝트 ID
-            @RequestBody ProjectDto projectDto, // 수정할 프로젝트 내용
+            @RequestBody ProjectUpdateDto projectDto, // 수정할 프로젝트 내용
             @RequestHeader("accountId") Long accountId
     ) {
-        ProjectDto updatedProject = projectService.updateProject(accountId, projectDto);
+        ProjectDto updatedProject = projectService.updateProject(accountId, projectId, projectDto);
         DefaultDto dto = new DefaultDto(200, updatedProject);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
