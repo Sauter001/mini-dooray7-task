@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Entity
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +24,9 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mile_stone_id", nullable = false)
     private Milestone milestone;
+
+    @OneToMany(mappedBy = "tag")
+    private List<Tag> tags;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String taskContent;

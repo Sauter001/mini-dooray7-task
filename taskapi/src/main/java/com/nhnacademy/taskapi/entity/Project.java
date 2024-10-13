@@ -17,7 +17,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "account_id")
     private Account manager;
 
@@ -30,6 +30,9 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<Milestone> milestones;
+
+    @OneToMany(mappedBy = "tag")
+    private List<Tag> tags;
 
     public Project(Account manager, String projectName, ProjectStatus projectStatus) {
         this.manager = manager;

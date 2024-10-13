@@ -1,6 +1,8 @@
 package com.nhnacademy.taskapi.service;
 
 import com.nhnacademy.taskapi.dto.request.ProjectDto;
+import com.nhnacademy.taskapi.dto.request.ProjectMakeDto;
+import com.nhnacademy.taskapi.dto.request.ProjectUpdateDto;
 import com.nhnacademy.taskapi.entity.*;
 import com.nhnacademy.taskapi.exception.AccountNotFoundException;
 import com.nhnacademy.taskapi.exception.AccountNotMemberException;
@@ -31,7 +33,7 @@ public class ProjectService {
     }
 
     // 프로젝트 생성 및 관리자 설정
-    public void saveProject(Long accountId, ProjectDto projectDto) {
+    public void saveProject(Long accountId, ProjectMakeDto projectDto) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
 
@@ -39,33 +41,34 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public Project updateProject(Long accountId, ProjectDto projectDto) {
-        Project project = projectRepository.findById(projectDto.projectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectDto.projectId()));
+    public ProjectDto updateProject(Long accountId, Long projectId, ProjectUpdateDto projectDto) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
 
         // 2. 요청한 사용자가 프로젝트 멤버인지 확인
-        ProjectMember projectMember =
-                projectMemberRepository.findByProjectAndMember(project, account).orElseThrow(() -> new AccountNotMemberException(accountId));
+        if(!projectMemberRepository.existsByProjectAndMember(project, account)){
+            throw new AccountNotMemberException(accountId);
+        }
 
         // 3. 프로젝트 필드 업데이트
         project.setProjectName(projectDto.projectName());
         project.setProjectStatus(projectDto.projectStatus());
+        projectRepository.save(project);
 
-        // 4. 업데이트된 프로젝트 저장
-        return projectRepository.save(project);
+        return new ProjectDto(project.getProjectId(), project.getManager().getAccountId(), project.getProjectName(), project.getProjectStatus());
     }
 
     @Transactional
-    public void deleteProject(long accountId, Long projectId) {
+    public void deleteProject(Long accountId, Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
-        if (!projectMemberRepository.existsByProjectAndMember(project, account)){
-            throw new AccountNotMemberException(accountId);
+        if (project.getManager().equals(account)){
+            throw new IllegalArgumentException("Olny manager can delete project.");
         }
 
         projectMemberRepository.deleteByProject(project);
@@ -95,18 +98,39 @@ public class ProjectService {
         if (projectMemberRepository.existsByProjectAndMember(project, registerAccount)) {
             throw new IllegalArgumentException("This account is already a member of the project.");
         }
+        if (account.equals(registerAccount)){
+            throw new IllegalArgumentException("You cannot add yourself as a project member.");
+        }
+        if (project.getManager().equals(registerAccount)){
+            throw new IllegalArgumentException("A manager cannot be added as a member.");
+        }
         //프로젝트멤버 추가
         ProjectMember newProjectMember = new ProjectMember(project, registerAccount);
         projectMemberRepository.save(newProjectMember);
     }
 
     // 사용자가 속한 프로젝트 목록 조회
-    public List<Project> getProjectsByAccountId(Long accountId) {
-        List<Project> projectList = new ArrayList<>();
+    public List<ProjectDto> getProjectsByAccountId(Long accountId) {
+        List<ProjectDto> projectList = new ArrayList<>();
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
-        projectList.addAll(account.getProjects());
-        projectList.addAll(projectMemberRepository.findProjectsByAccountId(accountId));
+        for (Project project : account.getProjects()){
+            ProjectDto projectDto = new ProjectDto(
+                    project.getProjectId(),
+                    project.getManager().getAccountId(),
+                    project.getProjectName(),
+                    project.getProjectStatus());
+            projectList.add(projectDto);
+        }
+        for (Project project : projectMemberRepository.findProjectsByAccountId(accountId)){
+            ProjectDto projectDto = new ProjectDto(
+                    project.getProjectId(),
+                    project.getManager().getAccountId(),
+                    project.getProjectName(),
+                    project.getProjectStatus());
+            projectList.add(projectDto);
+        }
+
         return projectList;
     }
 }
