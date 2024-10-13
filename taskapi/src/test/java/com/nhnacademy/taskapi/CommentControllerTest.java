@@ -31,10 +31,6 @@ class CommentControllerTest {
     @MockBean
     private CommentService commentService;
 
-//    // 만약 AccountCheckFilter를 사용할 경우 이 부분을 추가하여 Mock 처리
-//    @MockBean
-//    private AccountCheckFilter accountCheckFilter;
-
     private CommentView commentView;
     private TaskView taskView;
 
