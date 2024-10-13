@@ -64,6 +64,7 @@ public class ProjectService {
         // 4. 업데이트된 프로젝트 저장
         return projectRepository.save(project);
     }
+
     @Transactional
     public void deleteProject(long accountId, Long projectId) {
         Project project = projectRepository.findById(projectId)

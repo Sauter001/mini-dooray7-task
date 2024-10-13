@@ -57,6 +57,5 @@ public class TagController {
         DefaultDto dto = new DefaultDto(200, null);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
-
 }
 
