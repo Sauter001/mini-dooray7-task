@@ -9,5 +9,5 @@ import java.util.List;
 public interface MilestoneRepository extends JpaRepository<Milestone, Long> {
     MilestoneView findByMileStoneId(long id);
 
-    List<MilestoneView> findAllByProjectId(Long projectId);
+    List<MilestoneView> findAllByProjectProjectId(Long projectId);
 }

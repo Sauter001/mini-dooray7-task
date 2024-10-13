@@ -24,7 +24,7 @@ public class MilestoneService {
             throw new ResourceNotFoundException("Project with id " + projectId + " not found");
         }
 
-        return milestoneRepository.findAllByProjectId(projectId);
+        return milestoneRepository.findAllByProjectProjectId(projectId);
     }
 
     public void post(Long projectId, MilestonePostDto postDto) {

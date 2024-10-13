@@ -10,18 +10,15 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "project")
 public class Project {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long projectId;
 
     @Setter
-    private String name;
+    private String projectName;
 
     @Setter
     @Enumerated(EnumType.STRING)
@@ -29,5 +26,10 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<Milestone> milestones;
+
+    public Project(String projectName, ProjectStatus projectStatus) {
+        this.projectName = projectName;
+        this.projectStatus = projectStatus;
+    }
 }
 

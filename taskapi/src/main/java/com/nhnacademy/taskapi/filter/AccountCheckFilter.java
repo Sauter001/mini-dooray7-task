@@ -34,8 +34,7 @@ public class AccountCheckFilter implements Filter {
             // AccountRepository를 사용하여 계정 존재 여부 확인
             if (!accountRepository.existsById(accountId)) {
                 // 계정이 없으면 새로 추가
-                Account newAccount = new Account();
-                newAccount.setId(accountId);
+                Account newAccount = new Account(accountId);
                 accountRepository.save(newAccount);
             }
         }

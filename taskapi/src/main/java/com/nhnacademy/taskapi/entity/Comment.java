@@ -1,15 +1,15 @@
 package com.nhnacademy.taskapi.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "comments")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class Comment {
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;  // Many-to-one relationship with Task
 
-    @Column(name = "comment_content", nullable = false, length = 1000)  // The actual comment content
+    @Column(nullable = false, columnDefinition = "TEXT")  // The actual comment content
     private String commentContent;  // Comment content
 
     // Constructor to initialize required fields
