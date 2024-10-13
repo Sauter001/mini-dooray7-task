@@ -37,7 +37,7 @@ class CommentServiceTest {
     @Test
     void postCommentTest() {
         // given
-        CommentPostDto postDto = new CommentPostDto( "New comment",1L);
+        CommentPostDto postDto = new CommentPostDto( "New comment");
         //1L, "Test task"
         Task task = new Task();
         task.setTaskId(1L);
@@ -47,7 +47,7 @@ class CommentServiceTest {
         when(commentRepository.save(any(Comment.class))).thenReturn(new Comment("New comment", task));
 
         // when
-        commentService.postComment(postDto);
+        commentService.postComment(task.getTaskId(), postDto);
 
         // then
         verify(commentRepository, times(1)).save(any(Comment.class));
