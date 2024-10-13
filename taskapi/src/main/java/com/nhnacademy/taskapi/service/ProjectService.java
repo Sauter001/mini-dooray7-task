@@ -60,13 +60,13 @@ public class ProjectService {
     }
 
     @Transactional
-    public void deleteProject(long accountId, Long projectId) {
+    public void deleteProject(Long accountId, Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
-        if (!projectMemberRepository.existsByProjectAndMember(project, account)){
-            throw new AccountNotMemberException(accountId);
+        if (project.getManager().equals(account)){
+            throw new IllegalArgumentException("Olny manager can delete project.");
         }
 
         projectMemberRepository.deleteByProject(project);
