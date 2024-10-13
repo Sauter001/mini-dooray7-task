@@ -80,8 +80,12 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID: " + accountId));
 
-        if(!project.getManager().getAccountId().equals(accountId) || !projectMemberRepository.existsByProjectAndMember(project, account)){
+        if(!project.getManager().getAccountId().equals(accountId)) {
             throw new AccountNotMemberException(accountId);
+        }
+
+        if (accountId.equals(registerAccountId)){
+            throw new IllegalArgumentException("You cannot add yourself as a project member.");
         }
 
         //account 안에 있는지 확인
@@ -91,9 +95,6 @@ public class ProjectService {
         //프로젝트 멤버에 이미 있는지 확인
         if (projectMemberRepository.existsByProjectAndMember(project, registerAccount)) {
             throw new IllegalArgumentException("This account is already a member of the project.");
-        }
-        if (account.equals(registerAccount)){
-            throw new IllegalArgumentException("You cannot add yourself as a project member.");
         }
 
         //프로젝트멤버 추가

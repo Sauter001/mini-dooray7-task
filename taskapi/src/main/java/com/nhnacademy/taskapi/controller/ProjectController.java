@@ -2,6 +2,7 @@ package com.nhnacademy.taskapi.controller;
 
 import com.nhnacademy.taskapi.dto.request.ProjectDto;
 import com.nhnacademy.taskapi.dto.request.ProjectMakeDto;
+import com.nhnacademy.taskapi.dto.request.ProjectMemberDto;
 import com.nhnacademy.taskapi.dto.request.ProjectUpdateDto;
 import com.nhnacademy.taskapi.dto.response.DefaultDto;
 import com.nhnacademy.taskapi.service.ProjectService;
@@ -59,13 +60,13 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
-    @PostMapping("/{projectId}/members/{registerAccountId}")
+    @PostMapping("/{projectId}/members")
     public ResponseEntity<DefaultDto<Object>> addMemberToProject(
             @PathVariable Long projectId,  // 프로젝트 ID
-            @PathVariable Long registerAccountId,   // 계정 ID
+            @RequestBody ProjectMemberDto projectMemberDto,   // 계정 ID
             @RequestHeader("accountId") Long requestingAccountId
     ) {
-        projectService.addMemberToProject(requestingAccountId, registerAccountId, projectId);
+        projectService.addMemberToProject(requestingAccountId, projectMemberDto.accountId(), projectId);
         DefaultDto<Object> dto = new DefaultDto<>(201, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
