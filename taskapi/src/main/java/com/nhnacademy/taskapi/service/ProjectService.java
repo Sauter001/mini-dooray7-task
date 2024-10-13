@@ -1,10 +1,9 @@
 package com.nhnacademy.taskapi.service;
 
-import com.nhnacademy.taskapi.dto.request.ProjectDto;
-import com.nhnacademy.taskapi.entity.*;
-import com.nhnacademy.taskapi.exception.AccountNotFoundException;
-import com.nhnacademy.taskapi.exception.AccountNotMemberException;
-import com.nhnacademy.taskapi.exception.ResourceNotFoundException;
+import com.nhnacademy.taskapi.entity.Account;
+import com.nhnacademy.taskapi.entity.Project;
+import com.nhnacademy.taskapi.entity.ProjectAuth;
+import com.nhnacademy.taskapi.entity.ProjectMember;
 import com.nhnacademy.taskapi.repository.AccountRepository;
 import com.nhnacademy.taskapi.repository.ProjectMemberRepository;
 import com.nhnacademy.taskapi.repository.ProjectRepository;
@@ -78,20 +77,21 @@ public class ProjectService {
         projectMemberRepository.deleteByProject(project);
         projectRepository.delete(project);
     }
-    @Transactional
+
+
     public void addMemberToProject(Long accountId, Long registerAccountId, Long projectId) {
         // 프로젝트 조회
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
+                .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID:" + projectId));
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
+                .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID: " + accountId));
         // 프로젝트 유저인지 확인
         ProjectMember projectMember =
                 projectMemberRepository.findByProjectAndAccount(project, account).orElseThrow(() -> new AccountNotMemberException(accountId));
 
         //account 안에 있는지 확인
         Account registerAccount = accountRepository.findById(registerAccountId)
-                .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + registerAccountId));
+                .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID: " + registerAccountId));
 
         //프로젝트 멤버에 이미 있는지 확인
         if (projectMemberRepository.existsByProjectAndAccount(project, registerAccount)) {
@@ -100,17 +100,16 @@ public class ProjectService {
         //프로젝트멤버 추가
         ProjectMember newProjectMember = new ProjectMember();
         newProjectMember.setProject(project);
-        newProjectMember.setAccount(account);
+        newProjectMember.setAccount(registerAccount);
         newProjectMember.setProjectAuth(ProjectAuth.MEMBER);
-        projectMemberRepository.save(projectMember);
+        projectMemberRepository.save(newProjectMember);
+
+
     }
 
     // 사용자가 속한 프로젝트 목록 조회
     public List<Project> getProjectsByAccountId(Long accountId) {
         return projectMemberRepository.findProjectsByAccountId(accountId);
     }
-
-
-
 }
 
