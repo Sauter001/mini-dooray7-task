@@ -23,9 +23,9 @@ public class CommentService {
         return commentRepository.findAllByTaskTaskId(taskId);
     }
 
-    public void postComment(CommentPostDto postDto) {
-        Task task = taskRepository.findById(postDto.taskId())
-                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + postDto.taskId() + " not found"));
+    public void postComment(Long taskId, CommentPostDto postDto) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + taskId + " not found"));
 
         Comment comment = new Comment(postDto.commentContent(), task);
         commentRepository.save(comment);

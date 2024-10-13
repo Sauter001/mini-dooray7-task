@@ -25,14 +25,24 @@ public class CommentController {
         return ResponseEntity.ok(dto);
     }
 
-    // POST /projects/{projectId}/tasks/comments
-    @PostMapping("/{projectId}/tasks/comments")
-    public ResponseEntity<DefaultDto> postComment(@RequestBody CommentPostDto postDto) {
-        commentService.postComment(postDto);
+    // POST /projects/{projectId}/tasks/{taskId}/comments
+//    @PostMapping("/{projectId}/tasks/comments")
+//    public ResponseEntity<DefaultDto> postComment(@RequestBody CommentPostDto postDto) {
+//        commentService.postComment(postDto);
+//        DefaultDto dto = new DefaultDto(201, null);
+//        return ResponseEntity.status(201).body(dto);
+//    }
+
+    // 등록
+    @PostMapping("/{projectId}/tasks/{taskId}/comments")
+    public ResponseEntity<DefaultDto> postComment(@PathVariable("taskId") Long taskId,
+                                                  @RequestBody CommentPostDto postDto) {
+        commentService.postComment(taskId,postDto);
         DefaultDto dto = new DefaultDto(201, null);
         return ResponseEntity.status(201).body(dto);
     }
 
+    // 수정
     // PUT /projects/{projectId}/tasks/{taskId}/comments/{commentId}
     @PutMapping("/{projectId}/tasks/{taskId}/comments/{commentId}")
     public ResponseEntity<DefaultDto> updateComment(@PathVariable Long taskId,
@@ -42,6 +52,8 @@ public class CommentController {
         return ResponseEntity.ok(new DefaultDto(200, commentView));
     }
 
+
+    // 삭제
     // DELETE /projects/{projectId}/tasks/{taskId}/comments/{commentId}
     @DeleteMapping("/{projectId}/tasks/{taskId}/comments/{commentId}")
     public ResponseEntity<DefaultDto> deleteComment(@PathVariable Long taskId,
