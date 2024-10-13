@@ -22,7 +22,7 @@ public class Task {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mile_stone_id", nullable = false)
+    @JoinColumn(name = "mile_stone_id", nullable = true)
     private Milestone milestone;
 
     @OneToMany(mappedBy = "task")
