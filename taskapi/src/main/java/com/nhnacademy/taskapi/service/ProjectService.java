@@ -46,7 +46,7 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
 
-        if (project.getManager().getAccountId().equals(account.getAccountId())){
+        if (!project.getManager().getAccountId().equals(account.getAccountId())){
             throw new IllegalArgumentException("Only manager can delete project.");
         }
 
@@ -64,7 +64,7 @@ public class ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID" + accountId));
-        if (project.getManager().getAccountId().equals(account.getAccountId())){
+        if (!project.getManager().getAccountId().equals(account.getAccountId())){
             throw new IllegalArgumentException("Only manager can delete project.");
         }
 
@@ -80,7 +80,7 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account" + "ID: " + accountId));
 
-        if(!(project.getManager().getAccountId().equals(accountId) || projectMemberRepository.existsByProjectAndMember(project, account))){
+        if(!project.getManager().getAccountId().equals(accountId) || !projectMemberRepository.existsByProjectAndMember(project, account)){
             throw new AccountNotMemberException(accountId);
         }
 
