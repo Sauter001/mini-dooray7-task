@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerAdvice {
         @ExceptionHandler(AccountNotFoundException.class)
         public ResponseEntity<ErrorDto> accountNotFoundException(AccountNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                    new ErrorDto(409, e.getMessage())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ErrorDto(404, e.getMessage())
             );
         }
         @ExceptionHandler(AccountNotMemberException.class)
         public ResponseEntity<ErrorDto> accountMemberException(AccountNotMemberException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                    new ErrorDto(409, e.getMessage())
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                    new ErrorDto(403, e.getMessage())
             );
         }
         @ExceptionHandler(ResourceNotFoundException.class)
@@ -29,6 +29,13 @@ public class ControllerAdvice {
                     new ErrorDto(404, e.getMessage())
             );
         }
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<ErrorDto> illegalArgumentException(IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ErrorDto(400, e.getMessage())
+            );
+        }
+
 //
 //        @ExceptionHandler(AccountNotFoundException.class)
 //        public ResponseEntity<ErrorDto> accountNotFoundException(AccountNotFoundException e) {
