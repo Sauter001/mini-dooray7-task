@@ -3,6 +3,7 @@ package com.nhnacademy.taskapi.controller;
 import com.nhnacademy.taskapi.dto.request.ProjectDto;
 import com.nhnacademy.taskapi.dto.response.DefaultDto;
 import com.nhnacademy.taskapi.entity.Project;
+import com.nhnacademy.taskapi.entity.ProjectMember;
 import com.nhnacademy.taskapi.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class ProjectController {
         DefaultDto defaultDto = new DefaultDto(200, projects);
         return ResponseEntity.status(HttpStatus.CREATED).body(defaultDto);
     }
-
+    //프로젝트 등록
     @PostMapping
     public ResponseEntity<DefaultDto> registerProject(@RequestHeader("accountId") Long accountId,
                                                       @RequestBody ProjectDto projectDto) {

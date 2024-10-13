@@ -25,16 +25,15 @@ public class TagService {
     }
 
     public void saveTag(Long projectId, TagDto tagDto) {
-        Tag tag = new Tag();
-        tag.setTagName(tagDto.tagName());
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project" + "ID" + projectId));
-        tag.setProject(project);
+
+        Tag tag = new Tag(tagDto.tagId(), project, tagDto.tagName());
         tagRepository.save(tag);
     }
 
     public List<TagDto> getTagsByProjectId(Long projectId) {
-        List<Tag> tags = tagRepository.findAllByProjectId(projectId);
+        List<Tag> tags = tagRepository.findAllByProjectProjectId(projectId);
         List<TagDto> tagDtos = new ArrayList<>();
         for(Tag tag : tags){
             TagDto tagDto = new TagDto(tag.getTagId(), tag.getTagName());

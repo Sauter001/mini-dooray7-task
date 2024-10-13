@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
-    boolean existsByProjectAndAccount(Project project, Account account);
+    boolean existsByProjectAndMember(Project project, Account account);
 
-    @Query("SELECT pm.project FROM ProjectMember pm WHERE pm.account.id = :accountId")
+    @Query("SELECT pm.project FROM ProjectMember pm WHERE pm.member.accountId = :accountId")
     List<Project> findProjectsByAccountId(Long accountId);
 
-    Optional<ProjectMember> findByProjectAndAccount(Project project, Account account);
+    Optional<ProjectMember> findByProjectAndMember(Project project, Account account);
 
     void deleteByProject(Project project);
 }
