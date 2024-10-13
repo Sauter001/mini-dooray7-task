@@ -19,4 +19,9 @@ public class Tag {
 
     @Setter
     private String tagName;
+
+    public Tag(Project project, String tagName) {
+        this.project = project;
+        this.tagName = tagName;
+    }
 }
