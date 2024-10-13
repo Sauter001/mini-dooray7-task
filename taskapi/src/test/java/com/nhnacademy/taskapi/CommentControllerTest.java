@@ -50,7 +50,7 @@ class CommentControllerTest {
     @Test
     void postCommentTest() throws Exception {
         // given
-        CommentPostDto postDto = new CommentPostDto("Test comment", 1L);
+        CommentPostDto postDto = new CommentPostDto("Test comment");
 
         // when, then
         mockMvc.perform(post("/projects/1/tasks/comments")
