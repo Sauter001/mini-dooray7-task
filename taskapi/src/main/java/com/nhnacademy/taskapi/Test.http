@@ -36,7 +36,7 @@ AccountId: 10
 ###
 PUT http://localhost:8080/projects/1
 Content-Type: application/json
-X-USER-ID: 100
+X-USER-ID: 10
 
 {
   "projectId": 1,
@@ -82,4 +82,3 @@ Content-Type: application/json
 ### Comment 삭제
 DELETE http://localhost:8080/projects/1/tasks/1/comments/1
 Content-Type: application/json
-
