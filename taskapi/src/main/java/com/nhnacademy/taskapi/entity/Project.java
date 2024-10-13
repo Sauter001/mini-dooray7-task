@@ -31,7 +31,7 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<Milestone> milestones;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "project")
     private List<Tag> tags;
 
     public Project(Account manager, String projectName, ProjectStatus projectStatus) {

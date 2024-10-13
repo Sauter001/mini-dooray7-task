@@ -25,8 +25,8 @@ public class Task {
     @JoinColumn(name = "mile_stone_id", nullable = false)
     private Milestone milestone;
 
-    @OneToMany(mappedBy = "tag")
-    private List<Tag> tags;
+    @OneToMany(mappedBy = "task")
+    private List<TaskTag> taskTags;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String taskContent;
