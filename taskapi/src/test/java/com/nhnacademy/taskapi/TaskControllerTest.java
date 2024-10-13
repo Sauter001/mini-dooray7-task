@@ -5,7 +5,6 @@ import com.nhnacademy.taskapi.controller.TaskController;
 import com.nhnacademy.taskapi.dto.request.TaskPostDto;
 import com.nhnacademy.taskapi.dto.request.TaskPutDto;
 import com.nhnacademy.taskapi.dto.response.TaskResponseDto;
-import com.nhnacademy.taskapi.filter.AccountCheckFilter;
 import com.nhnacademy.taskapi.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,8 +32,6 @@ public class TaskControllerTest {
     @MockBean
     private TaskService taskService;
 
-    @MockBean
-    private AccountCheckFilter accountCheckFilter;
 
     @Autowired
     private ObjectMapper objectMapper;
