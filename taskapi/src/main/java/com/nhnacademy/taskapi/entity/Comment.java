@@ -22,7 +22,6 @@ public class Comment {
     @Column(nullable = false, columnDefinition = "TEXT")  // The actual comment content
     private String commentContent;  // Comment content
 
-    // Constructor to initialize required fields
     public Comment(String commentContent, Task task) {
         this.commentContent = commentContent;
         this.task = task;

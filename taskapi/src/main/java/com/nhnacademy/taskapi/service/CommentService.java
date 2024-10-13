@@ -24,10 +24,10 @@ public class CommentService {
     }
 
     public void postComment(CommentPostDto postDto) {
-        Task task = taskRepository.findById(postDto.getTaskId())
-                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + postDto.getTaskId() + " not found"));
+        Task task = taskRepository.findById(postDto.taskId())
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + postDto.taskId() + " not found"));
 
-        Comment comment = new Comment(postDto.getCommentContent(), task);
+        Comment comment = new Comment(postDto.commentContent(), task);
         commentRepository.save(comment);
     }
 
@@ -42,7 +42,7 @@ public class CommentService {
             throw new ResourceNotFoundException("Comment with id " + commentId + " not found for given task");
         }
 
-        comment.setCommentContent(putDto.getCommentContent());
+        comment.setCommentContent(putDto.commentContent());
         commentRepository.save(comment);
         return commentRepository.findByCommentId(commentId);
     }
