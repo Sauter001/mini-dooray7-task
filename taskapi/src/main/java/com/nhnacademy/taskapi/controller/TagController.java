@@ -41,21 +41,21 @@ public class TagController {
 
     //태그 수정
     @PutMapping
-    public ResponseEntity<DefaultDto> updateTag(@PathVariable Long projectId,
+    public ResponseEntity<DefaultDto<TagDto>> updateTag(@PathVariable Long projectId,
                                                 @RequestBody TagDto tagDto
     ) {
         TagDto updateTagDto = tagService.updateTag(projectId, tagDto);
-        DefaultDto dto = new DefaultDto(200, updateTagDto);
+        DefaultDto<TagDto> dto = new DefaultDto<>(200, updateTagDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     //태그 삭제
     @DeleteMapping
-    public ResponseEntity<DefaultDto> deleteProject(@PathVariable Long projectId,
+    public ResponseEntity<DefaultDto<Object>> deleteProject(@PathVariable Long projectId,
                                                     @RequestBody TagDto tagDto
     ) {
         tagService.deleteTag(projectId, tagDto);
-        DefaultDto dto = new DefaultDto(200, null);
+        DefaultDto<Object> dto = new DefaultDto<>(200, null);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 }
