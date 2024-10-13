@@ -25,14 +25,6 @@ public class CommentController {
         return ResponseEntity.ok(dto);
     }
 
-    // POST /projects/{projectId}/tasks/{taskId}/comments
-//    @PostMapping("/{projectId}/tasks/comments")
-//    public ResponseEntity<DefaultDto> postComment(@RequestBody CommentPostDto postDto) {
-//        commentService.postComment(postDto);
-//        DefaultDto dto = new DefaultDto(201, null);
-//        return ResponseEntity.status(201).body(dto);
-//    }
-
     // 등록
     @PostMapping("/{projectId}/tasks/{taskId}/comments")
     public ResponseEntity<DefaultDto> postComment(@PathVariable("taskId") Long taskId,
