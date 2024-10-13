@@ -69,4 +69,12 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    @GetMapping("/{projectId}")
+    public ResponseEntity<DefaultDto> getProject(@RequestHeader("accountId") Long accountId,
+                                                 @PathVariable Long projectId) {
+        ProjectDto project = projectService.getProject(accountId, projectId);
+        DefaultDto defaultDto = new DefaultDto(200, projects);
+        return ResponseEntity.status(HttpStatus.CREATED).body(defaultDto);
+    }
+
 }
