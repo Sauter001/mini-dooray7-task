@@ -2,12 +2,14 @@ package com.nhnacademy.taskapi.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +25,11 @@ public class Task {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String taskContent;
+
+    public Task() {
+
+    }
+
 
     public void setTaskContent(String taskContent) {
         this.taskContent = taskContent;
