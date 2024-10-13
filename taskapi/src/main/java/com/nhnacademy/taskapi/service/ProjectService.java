@@ -1,10 +1,9 @@
 package com.nhnacademy.taskapi.service;
 
-import com.nhnacademy.taskapi.dto.request.ProjectDto;
-import com.nhnacademy.taskapi.entity.*;
-import com.nhnacademy.taskapi.exception.AccountNotFoundException;
-import com.nhnacademy.taskapi.exception.AccountNotMemberException;
-import com.nhnacademy.taskapi.exception.ResourceNotFoundException;
+import com.nhnacademy.taskapi.entity.Account;
+import com.nhnacademy.taskapi.entity.Project;
+import com.nhnacademy.taskapi.entity.ProjectAuth;
+import com.nhnacademy.taskapi.entity.ProjectMember;
 import com.nhnacademy.taskapi.repository.AccountRepository;
 import com.nhnacademy.taskapi.repository.ProjectMemberRepository;
 import com.nhnacademy.taskapi.repository.ProjectRepository;
