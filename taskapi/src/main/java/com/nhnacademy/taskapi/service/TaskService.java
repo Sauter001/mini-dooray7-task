@@ -1,14 +1,21 @@
 package com.nhnacademy.taskapi.service;
 
+import com.nhnacademy.taskapi.dto.request.TaskPostDto;
+import com.nhnacademy.taskapi.dto.request.TaskPutDto;
+import com.nhnacademy.taskapi.dto.response.TaskResponseDto;
 import com.nhnacademy.taskapi.entity.Project;
 import com.nhnacademy.taskapi.entity.Task;
+import com.nhnacademy.taskapi.exception.ProjectNotFoundException;
+import com.nhnacademy.taskapi.exception.TaskBelongsToAnotherProjectException;
+import com.nhnacademy.taskapi.exception.TaskNotFoundException;
 import com.nhnacademy.taskapi.repository.ProjectRepository;
 import com.nhnacademy.taskapi.repository.TaskRepository;
+import jakarta.validation.constraints.Null;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-//에러 일단은 모두 runtimeexception으로 처리
 @Service
 public class TaskService {
 
@@ -20,53 +27,68 @@ public class TaskService {
         this.projectRepository = projectRepository;
     }
 
-    // 프로젝트 ID로 프로젝트에 속한 모든 task 조회
-    public List<Task> getTasksByProjectId(Long projectId, Long accountId) {
+    // 프로젝트 ID로 프로젝트에 속한 모든 Task 조회 (TaskResponseDto 반환)
+    public List<TaskResponseDto> getTasksByProjectId(Long projectId, Long accountId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
-        return taskRepository.findByProject(project);
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        // Task를 TaskResponseDto로 변환하여 반환
+        return taskRepository.findByProject(project).stream()
+                .map(this::toTaskResponseDto)
+                .collect(Collectors.toList());
     }
 
-    // Task 생성
-    public Task createTask(Long projectId, Long accountId, Task task) {
+    // Task 생성 (TaskPostDto로 입력 받고 TaskResponseDto로 반환)
+    public TaskResponseDto createTask(Long projectId, Long accountId, TaskPostDto taskPostDto) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        Task task = new Task();
         task.setProject(project);
-        return taskRepository.save(task);
+        task.setTaskContent(taskPostDto.taskContent());
+
+        Task createdTask = taskRepository.save(task);
+        return toTaskResponseDto(createdTask);
     }
 
-    // Task 수정
-
-    public Task updateTask(Long projectId, Long taskId, Long accountId, Task taskDetails) {
-        // 1. 먼저 프로젝트 존재 여부 확인
+    // Task 수정 (TaskPutDto로 입력 받고 TaskResponseDto로 반환)
+    public TaskResponseDto updateTask(Long projectId, Long taskId, Long accountId, TaskPutDto taskPutDto) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
-        // 2. Task 존재 여부 확인
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
 
-        // 3. Task가 해당 프로젝트에 속하는지 확인
         if (!task.getProject().getProjectId().equals(projectId)) {
-            throw new RuntimeException("Task does not belong to the specified project");
+            throw new TaskBelongsToAnotherProjectException(taskId, projectId);
         }
 
-        // Task content 업데이트
-        task.setTaskContent(taskDetails.getTaskContent());
-        return taskRepository.save(task);
+        task.setTaskContent(taskPutDto.taskContent());
+
+        Task updatedTask = taskRepository.save(task);
+        return toTaskResponseDto(updatedTask);
     }
 
     // Task 삭제
     public void deleteTask(Long projectId, Long taskId, Long accountId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
 
         if (!task.getProject().getProjectId().equals(projectId)) {
-            throw new RuntimeException("Task does not belong to the specified project");
+            throw new TaskBelongsToAnotherProjectException(taskId, projectId);
         }
+
         taskRepository.delete(task);
+    }
+
+    private TaskResponseDto toTaskResponseDto(Task task) {
+        TaskResponseDto dto = new TaskResponseDto(task.getTaskId(),task.getProject().getProjectId(),task.getMilestone(),task.getTaskContent());
+//        dto.setTaskId(task.getTaskId());
+//        dto.setProjectId(task.getProject().getProjectId());
+//        dto.setTaskContent(task.getTaskContent());
+        return dto;
     }
 }
