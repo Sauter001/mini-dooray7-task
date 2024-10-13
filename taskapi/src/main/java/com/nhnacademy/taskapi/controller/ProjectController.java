@@ -1,6 +1,7 @@
 package com.nhnacademy.taskapi.controller;
 
 import com.nhnacademy.taskapi.dto.request.ProjectDto;
+import com.nhnacademy.taskapi.dto.request.ProjectMakeDto;
 import com.nhnacademy.taskapi.dto.response.DefaultDto;
 import com.nhnacademy.taskapi.entity.Project;
 import com.nhnacademy.taskapi.entity.ProjectMember;
@@ -22,14 +23,14 @@ public class ProjectController {
     //프로젝트 가져오기
     @GetMapping
     public ResponseEntity<DefaultDto> getAllProjects(@RequestHeader("accountId") Long accountId) {
-        List<Project> projects = projectService.getProjectsByAccountId(accountId);
+        List<ProjectDto> projects = projectService.getProjectsByAccountId(accountId);
         DefaultDto defaultDto = new DefaultDto(200, projects);
         return ResponseEntity.status(HttpStatus.CREATED).body(defaultDto);
     }
     //프로젝트 등록
     @PostMapping
     public ResponseEntity<DefaultDto> registerProject(@RequestHeader("accountId") Long accountId,
-                                                      @RequestBody ProjectDto projectDto) {
+                                                      @RequestBody ProjectMakeDto projectDto) {
         projectService.saveProject(accountId, projectDto);
         DefaultDto dto = new DefaultDto(201, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
@@ -42,7 +43,7 @@ public class ProjectController {
             @RequestBody ProjectDto projectDto, // 수정할 프로젝트 내용
             @RequestHeader("accountId") Long accountId
     ) {
-        Project updatedProject = projectService.updateProject(accountId, projectDto);
+        ProjectDto updatedProject = projectService.updateProject(accountId, projectDto);
         DefaultDto dto = new DefaultDto(200, updatedProject);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
