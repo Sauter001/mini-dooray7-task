@@ -1,0 +1,81 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### 프로젝트 Post request
+POST http://localhost:8080/projects
+Content-Type: application/json
+AccountId: 100
+
+{
+  "projectName": "프로젝트 이름",
+  "project_status": "ACTIVE"
+}
+
+###
+GET http://localhost:8080/projects
+Content-Type: application/json
+AccountId: 100
+
+###
+PUT http://localhost:8080/projects/1
+Content-Type: application/json
+AccountId: 100
+
+{
+  "projectId": 1,
+  "projectName": "업데이트한 프로젝트 이름",
+  "project_status": "ACTIVE"
+}
+
+###
+GET http://localhost:8080/projects
+Content-Type: application/json
+AccountId: 10
+
+###
+POST http://localhost:8080/projects/1/members/10
+AccountId: 100
+Content-Type: application/json
+###
+DELETE http://localhost:8080/projects/1
+Content-Type: application/json
+AccountId: 100
+
+
+### tag save
+POST http://localhost:8080/projects/1/tags
+Content-Type: application/json
+AccountId: 100
+
+
+{
+  "tagName": "tag name"
+}
+
+### tag get
+GET  http://localhost:8080/projects/1/tags
+Content-Type: application/json
+AccountId: 100
+
+### tag update
+PUT http://localhost:8080/projects/1/tags
+Content-Type: application/json
+AccountId: 100
+
+{
+  "tagId": 1,
+  "tagName": "updated tag name"
+}
+
+### tag delete
+DELETE http://localhost:8080/projects/1/tags
+Content-Type: application/json
+AccountId: 100
+
+{
+  "tagId": 1,
+  "tagName": "updated tag name"
+}
+
+

@@ -1,25 +1,29 @@
 package com.nhnacademy.taskapi.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "Project")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "project")
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectId;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @Setter
+    private String name;
 
-    @Column(nullable = false, length = 30)
-    private String projectName;
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus projectStatus;
 
-    @Column(nullable = false, length = 20)
-    private String projectState;
-
-    // Getters and Setters
 }
 
