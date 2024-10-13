@@ -1,7 +1,9 @@
 package com.nhnacademy.taskapi.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "Task")
 public class Task {

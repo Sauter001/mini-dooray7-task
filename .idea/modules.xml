@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Mini-Dooray-7-Task.iml" filepath="$PROJECT_DIR$/.idea/Mini-Dooray-7-Task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taskapi/taskapi.iml" filepath="$PROJECT_DIR$/taskapi/taskapi.iml" />
     </modules>
   </component>
 </project>
