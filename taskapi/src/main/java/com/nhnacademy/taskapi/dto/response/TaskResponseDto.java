@@ -1,11 +1,15 @@
 package com.nhnacademy.taskapi.dto.response;
 
-import java.time.LocalDateTime;
+import com.nhnacademy.taskapi.entity.Milestone;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-public record TaskResponseDto(Long taskId,
-                              String title,
-                              String taskContent,
-                              Long assigneeId,
-                              LocalDateTime createdAt,
-                              LocalDateTime updatedAt) {
+
+public record TaskResponseDto (
+    Long taskId,
+    Long projectId,
+    Milestone milestoneId,
+    String taskContent
+) {
 }
+
