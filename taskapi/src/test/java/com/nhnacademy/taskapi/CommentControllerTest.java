@@ -20,7 +20,8 @@ import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CommentController.class)
 class CommentControllerTest {
@@ -78,36 +79,31 @@ class CommentControllerTest {
 
         // when: GET 요청을 통해 응답 검증
         ResultActions resultActions = mockMvc.perform(get("/projects/1/tasks/comments")
-                .contentType(MediaType.APPLICATION_JSON));
+                                                              .contentType(MediaType.APPLICATION_JSON));
 
         // then: 응답이 예상한 JSON과 일치하는지 확인
         resultActions
                 .andExpect(status().isOk())  // 상태 코드가 200인지 확인
                 .andExpect(jsonPath("$.code").value(200))  // 응답의 code가 200인지 확인
                 .andExpect(jsonPath("$.data[0].commentId").value(1L))  // commentId가 1인지 확인
-                .andExpect(jsonPath("$.data[0].commentContent").value("Test Comment"))  // commentContent가 "Test Comment"인지 확인
+                .andExpect(jsonPath("$.data[0].commentContent").value("Test Comment"))  // commentContent가 "Test
+                // Comment"인지 확인
                 .andExpect(jsonPath("$.data[0].task.taskId").value(1L));  // taskId가 1인지 확인
     }
 
-
-
-
-
     @Test
     void postCommentTest() throws Exception {
-<<<<<<< HEAD
-        // given
-        CommentPostDto postDto = new CommentPostDto("Test comment");
-=======
         // given: Mocking the service call
         CommentPostDto postDto = new CommentPostDto("New Comment");
-        doNothing().when(commentService).postComment(ArgumentMatchers.anyLong(), ArgumentMatchers.any(CommentPostDto.class));
->>>>>>> d67ae005c0106fd55606293b60950b2b1093bc97
+        doNothing().when(commentService).postComment(
+                ArgumentMatchers.anyLong(),
+                ArgumentMatchers.any(CommentPostDto.class)
+        );
 
         // when: Performing POST request
         ResultActions resultActions = mockMvc.perform(post("/projects/1/tasks/1/comments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"commentContent\":\"New Comment\"}"));
+                                                              .contentType(MediaType.APPLICATION_JSON)
+                                                              .content("{\"commentContent\":\"New Comment\"}"));
 
         // then: Verifying the response
         resultActions
@@ -119,13 +115,15 @@ class CommentControllerTest {
     void updateCommentTest() throws Exception {
         // given: Mocking the service call to return a CommentView object
         CommentPutDto putDto = new CommentPutDto("Updated Comment");
-        when(commentService.updateComment(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong(), ArgumentMatchers.any(CommentPutDto.class)))
+        when(commentService.updateComment(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong(),
+                                          ArgumentMatchers.any(CommentPutDto.class)
+        ))
                 .thenReturn(commentView);
 
         // when: Performing PUT request
         ResultActions resultActions = mockMvc.perform(put("/projects/1/tasks/1/comments/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"commentContent\":\"Updated Comment\"}"));
+                                                              .contentType(MediaType.APPLICATION_JSON)
+                                                              .content("{\"commentContent\":\"Updated Comment\"}"));
 
         // then: Verifying the response
         resultActions
@@ -143,7 +141,7 @@ class CommentControllerTest {
 
         // when: Performing DELETE request
         ResultActions resultActions = mockMvc.perform(delete("/projects/1/tasks/1/comments/1")
-                .contentType(MediaType.APPLICATION_JSON));
+                                                              .contentType(MediaType.APPLICATION_JSON));
 
         // then: Verifying the response
         resultActions

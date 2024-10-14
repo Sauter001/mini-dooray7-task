@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/{accountId}")
+@RequestMapping("members")
 public class AccountController {
 
     private final AccountService accountService;
@@ -19,7 +19,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping
+    @PostMapping("/{accountId}")
     public ResponseEntity<DefaultDto<Object>> addAccount(@PathVariable Long accountId){
         accountService.addAccount(accountId);
 
